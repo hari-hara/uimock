@@ -17,6 +17,9 @@ class UimockApp extends PolymerElement {
         :host {
           display: block;
         }
+        .navbar-light .navbar-nav .nav-link{
+          color: #fff;
+        }
       </style>
       <h2>Hello [[prop1]]!</h2>
       <div class="container">

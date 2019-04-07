@@ -13,6 +13,13 @@ class BuysellStock extends PolymerElement{
     constructor(){
         super();
     }
+    connectedCallback(){
+        super.connectedCallback();
+        // this.$.stockBrokerage.addEventListener('change', function(event){
+        //     console.log("getting triggered"); 
+        //     console.log(event.target.value);
+        // }.bind(this));
+    }
     ready(){
         super.ready();
         this.isVisible = true;
@@ -22,6 +29,27 @@ class BuysellStock extends PolymerElement{
         this.requestType = 'getStock';
         stockLoadajax.generateRequest();
     }
+    buyStock(event){  
+       
+        if(this.$.stocksList.querySelector('iron-form').validate()){
+            //this.TotalPrice = (this.unitPrice * this.qty); 
+            let buyStockajax = this.$.ajax;
+            buyStockajax.method = "POST";
+           buyStockajax.contentType = "application/json";
+           buyStockajax.url = config.baseURL+"/rmisecurity/tradestock";
+           buyStockajax.body = 
+           {
+               "userName": this.selectedUser,
+               "stockName": event.model.item.symbol,
+               "qty": this.qty,
+               "type": "cr",
+               "unitPrice": event.model.item.price,
+               "TotalPrice": this.finalPrice
+           }
+            this.requestType = 'buyStock';
+            buyStockajax.generateRequest();
+         }
+    }
     handleResponse(event, requestType ){
         switch(this.requestType){
             case 'getStock':
@@ -29,6 +57,7 @@ class BuysellStock extends PolymerElement{
                 this.isVisible = false;
                 console.log(event.detail.response);
                 this.data = event.detail.response;
+                //this.price = event.detail.response 
                 break;
             case 'buyStock':
                 this.toastMessage = "This transaction is successful"
@@ -49,6 +78,9 @@ class BuysellStock extends PolymerElement{
             users:{
                 type: Array,
                 value: ["user1", "user2", "user3"]
+            },
+            selectedUser:{
+                type: String
             }
             
             
@@ -58,6 +90,20 @@ class BuysellStock extends PolymerElement{
     handleError(event){
         this.$.messageHandle.toggle();
         this.toastMessage = "Failed to make transaction";
+    }
+    calculateBrokerage(event){
+        console.log(event.model.item);
+        console.log("change triggered");
+        console.log(event);
+        
+        let unitPrice = event.model.item.price;
+        let qty = this.qty;
+        let total = unitPrice * qty;
+        if(qty >= 500 ){
+            this.finalPrice = total + ((0.15 * total)/100);
+        }else{
+            this.finalPrice = total + ((0.10 * total)/100);
+        }
     }
     static get template(){
         return html `
@@ -71,6 +117,7 @@ class BuysellStock extends PolymerElement{
                     </template>
                 </paper-listbox>
             </paper-dropdown-menu>
+            <div id="stocksList">
             <vaadin-accordion>
                 <template is="dom-repeat"  items="{{data}}" as="product">
                     <vaadin-accordion-panel theme="filled"> 
@@ -78,33 +125,33 @@ class BuysellStock extends PolymerElement{
                         <template is="dom-repeat" items="{{product.company_details}}">
                             <table class="table">
                                 <tr>
-                                    <td>Open: [[item.open]]</td>
-                                    <td>low: [[item.close]]</td>
-                                    <td>high: [[item.high]]</td>
+                                    <td><strong>Open:</strong> [[item.open]]</td>
+                                    <td><strong>low:</strong> [[item.close]]</td>
+                                    <td><strong>high:</strong> [[item.high]]</td>
                                 </tr>
                                 <tr>
-                                    <td>latest trading day: [[item.latest_trading_day]]</td>
-                                    <td>price: [[item.price]]</td>
-                                    <td>previous closure: [[item.change_percent]]</td>
+                                    <td><strong>latest trading day:</strong> [[item.latest_trading_day]]</td>
+                                    <td><strong>Unit price:</strong> {{item.price}}</td>
+                                    <td><strong>previous closure:</strong> [[item.change_percent]]</td>
                                 </tr>
                                 <tr>
-                                    <td>[[item.latest_trading_day]]</td>
-                                    <td>[[item.price]]</td>
-                                    <td>[[item.change_percent]]</td>
+                                    <td><strong>Last Trading Day: </strong>[[item.latest_trading_day]]</td>
+                                   
+                                    <td><strong>Change Percent: </strong>[[item.change_percent]]</td>
                                 </tr>
                             </table>
                             
                             <iron-form id="stockselection" class="col-md-4 offset-md-4 border border-secondary pt-3 pb-3">
                                 <form>
-                                    <paper-input label="Qty" hidden$=[[isVisible]] value="{{qty}}"></paper-input>
-                                    <paper-button label="Submit" required raised on-click="buyStock">Submit</paper-input>
+                                    <paper-input label="Qty" hidden$=[[isVisible]] value="{{qty}}" id="stockBrokerage"></paper-input>&nbsp;&nbsp;<label>[[finalPrice]]</label>
+                                    <paper-button label="Get Quote" raised on-click="calculateBrokerage">Get Quote</paper-button>&nbsp;&nbsp;<paper-button label="Submit" required raised on-click="buyStock">Submit</paper-input>
                                 </form>
                             </iron-form>
-                            <div><paper-button label="Buy" required raised on-click="makeTransaction">Buy</paper-input></div>
                         </template>  
                     </vaadin-accordian-panel> 
                 </template>
             </vaadin-accordion>
+            </div>
             <iron-ajax
                 id="ajax"
                 handle-as="json"
