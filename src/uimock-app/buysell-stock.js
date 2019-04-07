@@ -45,7 +45,7 @@ class BuysellStock extends PolymerElement{
                "qty": this.qty,
                "type": "cr",
                "unitPrice": event.model.item.price,
-               "TotalPrice": this.finalPrice
+               "totalPrice": this.finalPrice
            }
             this.requestType = 'buyStock';
             buyStockajax.generateRequest();

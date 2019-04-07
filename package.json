@@ -5,6 +5,7 @@
     "@polymer/iron-form": "^3.0.1",
     "@polymer/iron-pages": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-dialog": "^3.0.1",
     "@polymer/paper-dropdown-menu": "^3.0.1",
     "@polymer/paper-input": "^3.0.1",
     "@polymer/paper-item": "^3.0.1",
