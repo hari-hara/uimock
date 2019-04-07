@@ -36,7 +36,7 @@ class StockSummary extends PolymerElement{
             let buyStockajax = this.$.ajax;
             
            buyStockajax.contentType = "application/json";
-           buyStockajax.url = "http://13.234.20.255:9080/rmisecurity/stmt/"+ this.selectedUser+ "/stockname";
+           buyStockajax.url = config.baseURL+"/rmisecurity/stmt/"+ this.selectedUser+ "/stockname";
             this.requestType = 'summary';
             buyStockajax.generateRequest();
          }
@@ -67,6 +67,7 @@ class StockSummary extends PolymerElement{
     static get template(){
         return html `
             <h2>[[pageTitle]]</h2>
+			<paper-toast id="messageHandle" text="[[toastMessage]]" horizontal-align="center" vertical-align="middle"></paper-toast>
             <iron-form id="getSummary" class="col-md-4 offset-md-4 border border-secondary pt-3 pb-3">
                 <form>
                     <paper-dropdown-menu label="Users" name="selectUser">
