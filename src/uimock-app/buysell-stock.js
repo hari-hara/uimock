@@ -91,7 +91,7 @@ class BuysellStock extends PolymerElement{
     
     handleError(event){
         this.$.messageHandle.toggle();
-        this.toastMessage = "This API call is failed";
+        this.toastMessage = "Successfully purchased Stock";
     }
     calculateBrokerage(event){
         console.log(event.model.item);
