@@ -26,7 +26,7 @@ class BuysellStock extends PolymerElement{
         let stockLoadajax = this.$.ajax;
         stockLoadajax.contentType = "application/json";
         //stockLoadajax.url = config.baseURL + "/rmisecurity/getDetails";
-        stockLoadajax.url = config.baseURL + "/ingdb/api/v1/stocks/getDetails";
+        stockLoadajax.url = config.baseURL + "/rmisecurity/getDetails";
         this.requestType = 'getStock';
         stockLoadajax.generateRequest();
     }
