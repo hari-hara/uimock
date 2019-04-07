@@ -25,7 +25,7 @@ class BuysellStock extends PolymerElement{
         this.isVisible = true;
         let stockLoadajax = this.$.ajax;
         stockLoadajax.contentType = "application/json";
-        //stockLoadajax.url = config.baseURL + "/ing_trade/api/v1/stocks/getDetails";
+        //stockLoadajax.url = config.baseURL + "/rmisecurity/getDetails";
         stockLoadajax.url = config.baseURL + "/ingdb/api/v1/stocks/getDetails";
         this.requestType = 'getStock';
         stockLoadajax.generateRequest();
@@ -106,6 +106,9 @@ class BuysellStock extends PolymerElement{
             this.finalPrice = total + ((0.10 * total)/100);
         }
     }
+    showStatistics(event){
+
+    }
     static get template(){
         return html `
             ${sharedStyles}
@@ -139,6 +142,7 @@ class BuysellStock extends PolymerElement{
                                     <td><strong>Last Trading Day: </strong>[[item.latest_trading_day]]</td>
                                    
                                     <td><strong>Change Percent: </strong>[[item.change_percent]]</td>
+                                    <td><paper-button label="Get Quote" raised on-click="showStatistics">Get Statistics</paper-button></td>
                                 </tr>
                             </table>
                             
