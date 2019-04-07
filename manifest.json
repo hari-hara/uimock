@@ -1,0 +1,6 @@
+{
+  "name": "uimock",
+  "short_name": "uimock",
+  "start_url": "/",
+  "display": "standalone"
+}
