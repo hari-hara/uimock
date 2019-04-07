@@ -25,7 +25,8 @@ class BuysellStock extends PolymerElement{
         this.isVisible = true;
         let stockLoadajax = this.$.ajax;
         stockLoadajax.contentType = "application/json";
-        stockLoadajax.url = config.baseURL + "/ing_trade/api/v1/stocks/getDetails";
+        //stockLoadajax.url = config.baseURL + "/ing_trade/api/v1/stocks/getDetails";
+        stockLoadajax.url = config.baseURL + "/ingdb/api/v1/stocks/getDetails";
         this.requestType = 'getStock';
         stockLoadajax.generateRequest();
     }
