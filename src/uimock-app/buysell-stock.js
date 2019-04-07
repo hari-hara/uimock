@@ -54,6 +54,7 @@ class BuysellStock extends PolymerElement{
     handleResponse(event, requestType ){
         switch(this.requestType){
             case 'getStock':
+                this.toastMessage = "Successfully fetched stocks"
                 this.isActive = false;
                 this.isVisible = false;
                 console.log(event.detail.response);
@@ -90,7 +91,7 @@ class BuysellStock extends PolymerElement{
     
     handleError(event){
         this.$.messageHandle.toggle();
-        this.toastMessage = "Failed to make transaction";
+        this.toastMessage = "This API call is failed";
     }
     calculateBrokerage(event){
         console.log(event.model.item);
